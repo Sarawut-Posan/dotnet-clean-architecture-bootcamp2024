@@ -1,8 +1,7 @@
-﻿using Application.Features.Register.Commands.CreateAccount;
+﻿using Application.Features.Auth.Queries.GetTokenJwt;
+using Application.Features.Register.Commands.CreateAccount;
 using Application.Models;
 using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -19,16 +18,17 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Register(RegisterRequestDto registerModel)
+        public async Task<IActionResult> Register(RegisterRequestDto registerModel)
         {
             var result = await mediator.Send(new CreateAccountCommand { RegisterModel = registerModel });
-            if (result == false)
-            {
-                return BadRequest();
-            }
-
             return Ok(result);
         }
-       
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
+        {
+            var result = await mediator.Send(new GetTokenJwtQuery { Email = request.Email, Password = request.Password });
+            return Ok(result);
+        }
     }
 }

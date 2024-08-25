@@ -5,10 +5,12 @@ using Application.Features.Category.Queries.GetAllCategories;
 using Application.Features.Category.Queries.GetCategoryById;
 using Application.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers {
     [Route("api/[controller]")]
+    
     [ApiController]
     public class CategoryController : ControllerBase {
 
@@ -18,7 +20,7 @@ namespace API.Controllers {
         {
             this.mediator = mediator;
         }
-
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllCategories() {
             var categories = await mediator.Send(new GetAllCategoriesQuery());
