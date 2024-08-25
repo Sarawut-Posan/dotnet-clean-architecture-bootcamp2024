@@ -14,7 +14,9 @@ namespace Persistence.Configurations {
             builder.HasKey(x => x.Id);
             builder.Property(p => p.Name)
                 .IsRequired()
-                .HasMaxLength(200);
+                .HasMaxLength(50);
+            builder.Property(p => p.UrlHandle)
+                .HasMaxLength(255);
         }
     }
 }

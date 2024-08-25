@@ -1,5 +1,6 @@
 ﻿using Application.Profiles;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace Application {
         public static IServiceCollection AddApplicationService(this IServiceCollection services) {
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddAutoMapper(cfg => cfg.AddProfileRegistration());
 
             return services;
@@ -21,6 +22,8 @@ namespace Application {
 
         public static IMapperConfigurationExpression AddProfileRegistration(this IMapperConfigurationExpression mapper) {
             mapper.AddProfile<CategoryProfile>();
+            mapper.AddProfile<BlogPostProfile>();
+            mapper.AddProfile<BlogImageProfile>();
             return mapper;
         }
     }
